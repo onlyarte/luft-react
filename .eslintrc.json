@@ -1,0 +1,13 @@
+{
+    "extends": "airbnb",
+    "rules": {
+        "react/jsx-filename-extension": "off",
+        "no-underscore-dangle": "off",
+        "react/prefer-stateless-function": "off",
+        "linebreak-style": "off",
+        "react/no-children-prop": "off",
+        "react/no-multi-comp": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "no-use-before-define": "off"
+    }
+}

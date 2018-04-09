@@ -1,28 +1,39 @@
-.App {
-  text-align: center;
+body, .LeftBlock {
+  background: #F9F9F9;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.LeftBlock {
+  border: none;
+  background: #F9F9F9;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.Label {
+  color: #6D89AA;
+  font-size: 0.8em;
 }
 
-.App-title {
-  font-size: 1.5em;
+.carousel-item.active {
+  display:block;
+  height: 100vh;
 }
 
-.App-intro {
-  font-size: large;
+.calendar {
+  font-family: Montserrat, sans-serif !important;
+  border: none !important;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.react-calendar__month-view__days__day {
+  font-size: 13px !important;
+  height: 38px !important;
+  width: 52px !important;
+}
+
+.react-calendar__tile {
+  font-size: 13px !important;
+}
+
+.Select-control, .Select-menu-outer {
+  border: none !important;
+  background: none;
 }

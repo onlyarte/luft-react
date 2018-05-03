@@ -11,6 +11,7 @@ body, .LeftBlock {
 .Label {
   color: #6D89AA;
   font-size: 0.8em;
+  margin-bottom: 25px;
 }
 
 .carousel-item.active {
@@ -36,4 +37,51 @@ body, .LeftBlock {
 .Select-control, .Select-menu-outer {
   border: none !important;
   background: none;
+}
+
+.pane {
+  padding: 20px;
+}
+
+.flight-cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 20px 0px;
+}
+
+.flight-card {
+  width: 300px;
+  margin: 0px 15px 15px 0px;
+  border: 0px;
+  border-radius: 10px;
+}
+.flight-card:hover,
+.flight-card:active {
+  background-color: #E6E6E6;
+}
+
+.flight-card-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.flight-card-from,
+.flight-card-to {
+  margin: 0px 3%;
+}
+
+.flight-card-order {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.flight-card-price {
+  font-size: 1.7em;
 }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Calendar from 'react-calendar';
+import PropTypes from 'prop-types';
 
 class RoutePicker extends Component {
   constructor(props) {
@@ -15,11 +16,12 @@ class RoutePicker extends Component {
       route: {
         from: '',
         to: '',
-        date: '',
-        back: '',
+        type: 'round',
+        dates: [new Date(), new Date()],
+        date: new Date(),
       },
       airports: [],
-    }
+    };
   }
 
   componentDidMount() {
@@ -33,12 +35,13 @@ class RoutePicker extends Component {
           value: airport._id,
           label: airport.city,
           code: airport.code,
+          clearableValue: false,
         }));
         this.setState({ airports });
       })
       .catch((error) => {
         console.log(error);
-      })
+      });
   }
 
   handleChange(event) {
@@ -50,6 +53,27 @@ class RoutePicker extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+
+    const { route } = this.state;
+    const formatted = { from: route.from, to: route.to };
+    console.log(formatted);
+
+    if (route.type === 'round') {
+      const date = new Date(route.dates[0].getTime());
+      const dateBack = new Date(route.dates[1].getTime());
+      date.setUTCHours(0, 0, 0, 0);
+      dateBack.setUTCHours(0, 0, 0, 0);
+      formatted.date =
+        encodeURI(date.toUTCString());
+      formatted.dateBack =
+        encodeURI(dateBack.toUTCString());
+    } else {
+      const date = new Date(route.date.getTime());
+      date.setUTCHours(0, 0, 0, 0);
+      formatted.date =
+        encodeURI(date.toUTCString());
+    }
+    this.props.onPick(formatted);
   }
 
   render() {
@@ -66,6 +90,7 @@ class RoutePicker extends Component {
             options={this.state.airports}
             placeholder="Відправлення"
             className="input"
+            clearable={false}
           />
         </div>
         <div className="form-group">
@@ -79,22 +104,61 @@ class RoutePicker extends Component {
             options={this.state.airports}
             placeholder="Прибуття"
             className="input"
+            clearable={false}
           />
         </div>
         <div className="form-group">
-          <Calendar
-            onChange={this.onChange}
-            locale="uk-UK"
-            value={this.state.route.date}
-            className="calendar"
+          <Select
+            name="type"
+            value={this.state.route.type}
+            onChange={option => this.handleChange({ target: { name: 'type', value: option.value } })}
+            options={[
+              {
+                value: 'round',
+                label: 'Туди і назад',
+              }, {
+                value: 'oneway',
+                label: 'В один бік',
+              },
+            ]}
+            className="input"
+            clearable={false}
           />
         </div>
         <div className="form-group">
-          <button className="btn btn-block">Шукати</button>
+          {this.state.route.type === 'round' && (
+            <Calendar
+              onChange={
+                dates => this.handleChange({ target: { name: 'dates', value: dates } })
+              }
+              locale="uk-UK"
+              returnValue="range"
+              selectRange
+              value={this.state.route.dates}
+              className="calendar"
+            />
+          )}
+          {this.state.route.type === 'oneway' && (
+            <Calendar
+              onChange={
+                dates => this.handleChange({ target: { name: 'date', value: dates } })
+              }
+              locale="uk-UK"
+              value={this.state.route.date}
+              className="calendar"
+            />
+          )}
+        </div>
+        <div className="form-group">
+          <button type="submit" className="btn btn-block">Шукати</button>
         </div>
       </form>
     );
   }
 }
+
+RoutePicker.propTypes = {
+  onPick: PropTypes.func.isRequired,
+};
 
 export default RoutePicker;

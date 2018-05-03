@@ -9,7 +9,7 @@ class FlightPicker extends Component {
     super(props);
     this.fetchAirports = this.fetchAirports.bind(this);
     this.fetchFlights = this.fetchFlights.bind(this);
-    this.handlePick = this.handlePick.bind(this);
+    this.handleOrders = this.handleOrders.bind(this);
 
     this.state = {
       from: { name: '' },
@@ -54,6 +54,7 @@ class FlightPicker extends Component {
   fetchFlights(from, to, date, dateBack) {
     axios.get(`http://localhost:3000/flights/find/${from}/${to}/${date}`)
       .then(({ data }) => {
+        console.log(data);
         this.setState({ flights: data, loaded: true });
       })
       .catch((error) => {
@@ -72,12 +73,11 @@ class FlightPicker extends Component {
     }
   }
 
-  handlePick(flight) {
+  handleOrders(orders) {
     const { basket } = this.state;
-    const newBasket = [...basket];
-    newBasket.push(flight);
-    this.setState({ basket: newBasket });
-    console.log(newBasket);
+    basket.push(...orders);
+    this.setState({ basket });
+    console.log(basket);
   }
 
   render() {
@@ -88,7 +88,7 @@ class FlightPicker extends Component {
             <h2>{this.state.from.name} — {this.state.to.name}</h2>
             <div className="flight-cards">
               {this.state.flights.map(flight => (
-                <FlightCard flight={flight} onPick={this.handlePick} key={flight._id} />
+                <FlightCard flight={flight}  onOrder={this.handleOrders} key={flight._id} />
               ))}
             </div>
             {this.props.dateBack && (
@@ -96,7 +96,7 @@ class FlightPicker extends Component {
                 <h2>{this.state.to.name} — {this.state.from.name}</h2>
                 <div className="flight-cards">
                   {this.state.flightsBack.map(flight => (
-                    <FlightCard flight={flight} onPick={this.handlePick} key={flight._id} />
+                    <FlightCard flight={flight} onOrder={this.handleOrders} key={flight._id} />
                   ))}
                 </div>
               </React.Fragment>

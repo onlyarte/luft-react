@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import SchemeModal from './SchemeModal';
+
 class FlightCard extends Component {
   render() {
-    const { flight, onPick } = this.props;
+    const { flight, onOrder } = this.props;
     return (
       <div className="card flight-card">
         <div className="card-body">
@@ -22,7 +24,15 @@ class FlightCard extends Component {
           </div>
           <div className="flight-card-order">
             <div className="text-danger flight-card-price">{flight.price.amount} ₴ </div>
-            <button type="button" onClick={e => onPick(flight, e)} className="btn btn-outline-success">Далі</button>
+            <button
+              type="button"
+              className="btn btn-outline-success"
+              data-toggle="modal"
+              data-target={`#${flight._id}-scheme-view`}
+            >
+              Далі
+            </button>
+            <SchemeModal id={`${flight._id}-scheme-view`} flight={flight} onSubmit={onOrder} />
           </div>
         </div>
       </div>
@@ -47,8 +57,15 @@ FlightCard.propTypes = {
       departureTime: PropTypes.string.isRequired,
       arrivalTime: PropTypes.string.isRequired,
     }).isRequired,
+    plane: PropTypes.shape({
+      scheme: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({
+        empty: PropTypes.bool,
+        seatNum: PropTypes.number,
+      }))).isRequired,
+    }).isRequired,
   }).isRequired,
-  onPick: PropTypes.func.isRequired,
+
+  onOrder: PropTypes.func.isRequired,
 };
 
 export default FlightCard;

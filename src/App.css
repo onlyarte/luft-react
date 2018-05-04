@@ -104,3 +104,46 @@ body, .LeftBlock {
   text-align: center;
   vertical-align: middle;
 }
+
+.navbar-full-width {
+  padding: 0px 0px 15px 0px;
+}
+
+
+.basket-card {
+  margin: 0px 15px 15px 0px;
+  border: 0px;
+  border-radius: 10px;
+}
+.basket-card:hover,
+.basket-card:active {
+  background-color: #E6E6E6;
+}
+
+.basket-card-info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.basket-card-from,
+.basket-card-to {
+  margin: 0px 3%;
+}
+
+.basket-card-order {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.basket-card-price {
+  font-size: 1.7em;
+}
+.basket-cart-two-row-info {
+  text-align: center;
+}

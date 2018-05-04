@@ -5,37 +5,43 @@ import SchemeModal from './SchemeModal';
 
 class FlightCard extends Component {
   render() {
-    const { flight, onOrder } = this.props;
+    const { flight, onOrdersAdd } = this.props;
     return (
-      <div className="card flight-card">
-        <div className="card-body">
-          <div className="flight-card-info">
-            <div className="flight-card-from">
-              <h3>{flight.connection.originAirport.code}</h3>
-              <h3>{flight.connection.departureTime}</h3>
+      <React.Fragment>
+        <div className="card flight-card">
+          <div className="card-body">
+            <div className="flight-card-info">
+              <div className="flight-card-from">
+                <h3>{flight.connection.originAirport.code}</h3>
+                <h3>{flight.connection.departureTime}</h3>
+              </div>
+              <div className="flight-card-arrow">
+                <span className="oi oi-arrow-right" />
+              </div>
+              <div className="flight-card-to">
+                <h3>{flight.connection.destinationAirport.code}</h3>
+                <h3>{flight.connection.arrivalTime}</h3>
+              </div>
             </div>
-            <div className="flight-card-arrow">
-              <span className="oi oi-arrow-right" />
+            <div className="flight-card-order">
+              <div className="text-danger flight-card-price">{flight.price.amount} ₴ </div>
+              <button
+                type="button"
+                className="btn btn-outline-success"
+                data-toggle="modal"
+                data-target={`#${flight._id}-scheme-view`}
+              >
+                Далі
+              </button>
             </div>
-            <div className="flight-card-to">
-              <h3>{flight.connection.destinationAirport.code}</h3>
-              <h3>{flight.connection.arrivalTime}</h3>
-            </div>
-          </div>
-          <div className="flight-card-order">
-            <div className="text-danger flight-card-price">{flight.price.amount} ₴ </div>
-            <button
-              type="button"
-              className="btn btn-outline-success"
-              data-toggle="modal"
-              data-target={`#${flight._id}-scheme-view`}
-            >
-              Далі
-            </button>
-            <SchemeModal id={`${flight._id}-scheme-view`} flight={flight} onSubmit={onOrder} />
           </div>
         </div>
-      </div>
+        <SchemeModal
+          id={`${flight._id}-scheme-view`}
+          flight={flight}
+          onSubmit={onOrdersAdd}
+        />
+      </React.Fragment>
     );
   }
 }
@@ -65,7 +71,7 @@ FlightCard.propTypes = {
     }).isRequired,
   }).isRequired,
 
-  onOrder: PropTypes.func.isRequired,
+  onOrdersAdd: PropTypes.func.isRequired,
 };
 
 export default FlightCard;

@@ -8,6 +8,8 @@ class SchemeModal extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
+    this.closeButton = React.createRef();
+
     this.state = {
       scheme: this.props.flight.plane.scheme,
       selection: [],
@@ -51,9 +53,14 @@ class SchemeModal extends Component {
         _id: flight.price._id,
         amount: flight.price.amount,
       },
+      passanger: {
+        firstname: '',
+        surname: '',
+      },
     }));
 
     this.props.onSubmit(orders);
+    this.closeButton.current.click();
   }
 
   render() {
@@ -64,7 +71,7 @@ class SchemeModal extends Component {
 
             <div className="modal-header">
               <h4 className="modal-title">Оберіть місця</h4>
-              <button type="button" className="close" data-dismiss="modal">&times;</button>
+              <button type="button" className="close" data-dismiss="modal" ref={this.closeButton}>&times;</button>
             </div>
 
             <div className="modal-body">

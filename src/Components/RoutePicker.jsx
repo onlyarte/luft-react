@@ -59,20 +59,28 @@ class RoutePicker extends Component {
     console.log(formatted);
 
     if (route.type === 'round') {
-      const date = new Date(route.dates[0].getTime());
-      const dateBack = new Date(route.dates[1].getTime());
-      date.setUTCHours(0, 0, 0, 0);
-      dateBack.setUTCHours(0, 0, 0, 0);
       formatted.date =
-        encodeURI(date.toUTCString());
+        Date.UTC(
+          route.dates[0].getFullYear(),
+          route.dates[0].getMonth(),
+          route.dates[0].getDate(),
+        ).toString();
       formatted.dateBack =
-        encodeURI(dateBack.toUTCString());
+        Date.UTC(
+          route.dates[1].getFullYear(),
+          route.dates[1].getMonth(),
+          route.dates[1].getDate(),
+        ).toString();
     } else {
-      const date = new Date(route.date.getTime());
-      date.setUTCHours(0, 0, 0, 0);
       formatted.date =
-        encodeURI(date.toUTCString());
+        Date.UTC(
+          route.date.getFullYear(),
+          route.date.getMonth(),
+          route.date.getDate(),
+        );
     }
+    console.log(route.dates);
+    console.log(formatted);
     this.props.onPick(formatted);
   }
 

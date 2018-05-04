@@ -9,15 +9,13 @@ class FlightPicker extends Component {
     super(props);
     this.fetchAirports = this.fetchAirports.bind(this);
     this.fetchFlights = this.fetchFlights.bind(this);
-    this.handleOrders = this.handleOrders.bind(this);
 
     this.state = {
       from: { name: '' },
       to: { name: '' },
-      loaded: false,
       flights: [],
       flightsBack: [],
-      basket: [],
+      loaded: false,
     };
   }
 
@@ -29,6 +27,14 @@ class FlightPicker extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { from, to, date, dateBack } = nextProps;
+
+    if (from === this.props.from
+      && to === this.props.to
+      && date === this.props.date
+      && dateBack === this.props.dateBack) {
+      return;
+    }
+
     this.fetchAirports(from, to);
     this.fetchFlights(from, to, date, dateBack);
   }
@@ -73,13 +79,6 @@ class FlightPicker extends Component {
     }
   }
 
-  handleOrders(orders) {
-    const { basket } = this.state;
-    basket.push(...orders);
-    this.setState({ basket });
-    console.log(basket);
-  }
-
   render() {
     return (
       <div className="pane">
@@ -88,7 +87,11 @@ class FlightPicker extends Component {
             <h2>{this.state.from.name} — {this.state.to.name}</h2>
             <div className="flight-cards">
               {this.state.flights.map(flight => (
-                <FlightCard flight={flight}  onOrder={this.handleOrders} key={flight._id} />
+                <FlightCard
+                  flight={flight}
+                  onOrdersAdd={this.props.onOrdersAdd}
+                  key={flight._id}
+                />
               ))}
             </div>
             {this.props.dateBack && (
@@ -96,7 +99,11 @@ class FlightPicker extends Component {
                 <h2>{this.state.to.name} — {this.state.from.name}</h2>
                 <div className="flight-cards">
                   {this.state.flightsBack.map(flight => (
-                    <FlightCard flight={flight} onOrder={this.handleOrders} key={flight._id} />
+                    <FlightCard
+                      flight={flight}
+                      onOrdersAdd={this.props.onOrdersAdd}
+                      key={flight._id}
+                    />
                   ))}
                 </div>
               </React.Fragment>
@@ -116,6 +123,8 @@ FlightPicker.propTypes = {
   to: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   dateBack: PropTypes.string,
+
+  onOrdersAdd: PropTypes.func.isRequired,
 };
 
 export default FlightPicker;

@@ -1,7 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 class Basket extends Component {
+  constructor(props) {
+    super(props);
+    this.handleBuy = this.handleBuy.bind(this);
+  }
+
+  handleBuy() {
+    Promise.all(this.props.basket.map(order => (
+      axios.post('http://localhost:3000/tickets/new', {
+        flightId: order.flight._id,
+        priceId: order.price._id,
+        seat: order.seat,
+        passanger: order.passanger,
+      }, { withCredentials: true })
+    )))
+      .then(() => {
+        this.props.onBought();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
     return (
       <div className="modal fade" id="basket">
@@ -14,6 +37,9 @@ class Basket extends Component {
             </div>
 
             <div className="modal-body">
+              {this.props.basket.length === 0 && (
+                <div className="empty-label">Тут поки порожньо...</div>
+              )}
               {this.props.basket.map((item, index) => (
                 <div className="card basket-card" key={`${item.flight._id}-${item.seat}`}>
                   <div className="card-body">
@@ -50,7 +76,10 @@ class Basket extends Component {
             </div>
 
             <div className="modal-footer">
-              <button type="button" className="btn btn-danger" data-dismiss="modal">Close</button>
+              <div className="text-danger basket-card-price">
+                {this.props.basket.reduce((sum, current) => (sum + current.price.amount), 0)} ₴
+              </div>
+              <button type="button" className="btn btn-outline-success" onClick={this.handleBuy}>Купити</button>
             </div>
 
           </div>
@@ -68,6 +97,7 @@ Basket.propTypes = {
       destination: PropTypes.string.isRequired,
       departure: PropTypes.string.isRequired,
       arrival: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
     }).isRequired,
     price: PropTypes.shape({
       _id: PropTypes.string.isRequired,
@@ -82,6 +112,7 @@ Basket.propTypes = {
 
   onOrderRemove: PropTypes.func.isRequired,
   onPassangerChange: PropTypes.func.isRequired,
+  onBought: PropTypes.func.isRequired,
 };
 
 export default Basket;

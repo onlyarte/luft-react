@@ -1,41 +1,85 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './App.css';
 
 import Basket from './Components/Basket';
+import Tickets from './Components/Tickets';
 import RoutePicker from './Components/RoutePicker';
 import FlightPicker from './Components/FlightPicker';
 import Carousel from './Components/Carousel';
+import AuthModal from './Components/Auth/AuthModal';
 
 class App extends Component {
   constructor(props) {
     super(props);
+    this.fetchUser = this.fetchUser.bind(this);
+    this.fetchTickets = this.fetchTickets.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+
     this.handleRoutePick = this.handleRoutePick.bind(this);
+
     this.handleOrdersAdd = this.handleOrdersAdd.bind(this);
     this.handleOrderRemove = this.handleOrderRemove.bind(this);
     this.handlePassangerChange = this.handlePassangerChange.bind(this);
 
     this.state = {
-      route: {
-        selected: false,
-        from: null,
-        to: null,
-        date: null,
-        dateBack: null,
-      },
+      route: null,
       basket: [],
+      user: null,
+      tickets: [],
     };
   }
 
+  componentDidMount() {
+    this.fetchUser();
+    this.fetchTickets();
+  }
+
+  fetchUser() {
+    axios.get(
+      'http://localhost:3000/users/current',
+      { withCredentials: true },
+    )
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({ user: data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  fetchTickets() {
+    axios.get(
+      'http://localhost:3000/users/tickets',
+      { withCredentials: true },
+    )
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({ tickets: data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  handleLogin(user) {
+    this.setState({ user });
+  }
+
+  handleLogout() {
+    axios.delete('http://localhost:3000/users/logout', { withCredentials: true })
+      .then(() => {
+        this.setState({ user: null });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   handleRoutePick({ from, to, date, dateBack }) {
-    this.setState({
-      route: {
-        from,
-        to,
-        date,
-        dateBack,
-        selected: true,
-      },
-    });
+    this.setState({ route: { from, to, date, dateBack } });
   }
 
   handleOrdersAdd(orders) {
@@ -48,7 +92,6 @@ class App extends Component {
         === pos
     ));
     this.setState({ basket: uniqueBasket });
-    console.log(uniqueBasket);
   }
 
   handleOrderRemove(order) {
@@ -57,15 +100,12 @@ class App extends Component {
       !(item.flight._id === order.flight._id && item.seat === order.seat)
     ));
     this.setState({ basket: newBasket });
-    console.log(newBasket);
   }
 
   handlePassangerChange(index, prop, val) {
-    console.log({index, prop, val});
     const { basket } = this.state;
     basket[index].passanger[prop] = val;
     this.setState({ basket });
-    console.log(basket);
   }
 
   render() {
@@ -90,6 +130,21 @@ class App extends Component {
                       <li className="nav-item">
                         <a className="nav-link" href="#basket" data-toggle="modal" data-target="#basket">Кошик</a>
                       </li>
+                      {!this.state.user && (
+                        <li className="nav-item">
+                          <a className="nav-link" href="#auth" data-toggle="modal" data-target="#auth">Увійти</a>
+                        </li>
+                      )}
+                      {this.state.user && (
+                        <React.Fragment>
+                          <li className="nav-item">
+                            <a className="nav-link" href="#tickets" data-toggle="modal" data-target="#tickets">Мої квитки</a>
+                          </li>
+                          <li className="nav-item">
+                            <a className="nav-link" href="#logout" onClick={this.handleLogout}>Вийти</a>
+                          </li>
+                        </React.Fragment>
+                      )}
                       <li className="nav-item">
                         <a className="nav-link" href="#">Контакти</a>
                       </li>
@@ -103,13 +158,21 @@ class App extends Component {
                   basket={this.state.basket}
                   onOrderRemove={this.handleOrderRemove}
                   onPassangerChange={this.handlePassangerChange}
+                  user={this.state.user ? this.state.user._id : null}
+                  onBought={this.fetchTickets}
                 />
+                <Tickets
+                  tickets={this.state.tickets}
+                />
+                {!this.state.user && (
+                  <AuthModal onLogin={this.handleLogin} />
+                )}
                 <RoutePicker onPick={this.handleRoutePick} />
               </div>
             </div>
           </div>
           <div className="col-12 col-sm-6 col-md-8 col-lg-9">
-            {this.state.route.selected && (
+            {this.state.route && (
               <FlightPicker
                 from={this.state.route.from}
                 to={this.state.route.to}
@@ -118,7 +181,7 @@ class App extends Component {
                 onOrdersAdd={this.handleOrdersAdd}
               />
             )}
-            {!this.state.route.selected && (
+            {!this.state.route && (
               <Carousel />
             )}
           </div>

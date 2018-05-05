@@ -147,3 +147,9 @@ body, .LeftBlock {
 .basket-cart-two-row-info {
   text-align: center;
 }
+
+.empty-label {
+  font-size: 1.7em;
+  text-align: center;
+  vertical-align: middle;
+}

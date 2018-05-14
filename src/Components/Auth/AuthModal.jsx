@@ -16,7 +16,7 @@ class AuthModal extends Component {
   }
 
   handleLogin({ email, password }) {
-    axios.post('http://localhost:3000/users/login', {
+    axios.post('https://api-luft-kma.herokuapp.com/users/login', {
       email, password,
     }, { withCredentials: true })
       .then(({ data }) => {
@@ -31,7 +31,7 @@ class AuthModal extends Component {
   }
 
   handleRegister({ email, password, firstname, surname }) {
-    axios.post('http://localhost:3000/users/new', {
+    axios.post('https://api-luft-kma.herokuapp.com/users/new', {
       email, password, firstname, surname,
     }, { withCredentials: true })
       .then(({ data }) => {

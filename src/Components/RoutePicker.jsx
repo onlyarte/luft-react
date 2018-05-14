@@ -29,7 +29,7 @@ class RoutePicker extends Component {
   }
 
   loadAirports() {
-    axios.get('http://localhost:3000/airports')
+    axios.get('https://api-luft-kma.herokuapp.com/airports')
       .then(({ data }) => {
         const airports = data.map(airport => ({
           value: airport._id,
@@ -77,7 +77,8 @@ class RoutePicker extends Component {
           route.date.getFullYear(),
           route.date.getMonth(),
           route.date.getDate(),
-        );
+        ).toString();
+      console.log(formatted.date);
     }
     console.log(route.dates);
     console.log(formatted);

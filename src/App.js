@@ -38,7 +38,7 @@ class App extends Component {
 
   fetchUser() {
     axios.get(
-      'http://localhost:3000/users/current',
+      'https://api-luft-kma.herokuapp.com/users/current',
       { withCredentials: true },
     )
       .then(({ data }) => {
@@ -52,7 +52,7 @@ class App extends Component {
 
   fetchTickets() {
     axios.get(
-      'http://localhost:3000/users/tickets',
+      'https://api-luft-kma.herokuapp.com/users/tickets',
       { withCredentials: true },
     )
       .then(({ data }) => {
@@ -69,7 +69,10 @@ class App extends Component {
   }
 
   handleLogout() {
-    axios.delete('http://localhost:3000/users/logout', { withCredentials: true })
+    axios.delete(
+      'https://api-luft-kma.herokuapp.com/users/logout',
+      { withCredentials: true }
+    )
       .then(() => {
         this.setState({ user: null });
       })

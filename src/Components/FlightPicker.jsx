@@ -40,15 +40,16 @@ class FlightPicker extends Component {
   }
 
   fetchAirports(fromId, toId) {
-    axios.get(`http://localhost:3000/airports/${fromId}`)
+    axios.get(`https://api-luft-kma.herokuapp.com/airports/${fromId}`)
       .then(({ data }) => {
+        console.log(data);
         this.setState({ from: data });
       })
       .catch((error) => {
         console.log(error);
       });
 
-    axios.get(`http://localhost:3000/airports/${toId}`)
+    axios.get(`https://api-luft-kma.herokuapp.com/airports/${toId}`)
       .then(({ data }) => {
         this.setState({ to: data });
       })
@@ -58,7 +59,7 @@ class FlightPicker extends Component {
   }
 
   fetchFlights(from, to, date, dateBack) {
-    axios.get(`http://localhost:3000/flights/find/${from}/${to}/${date}`)
+    axios.get(`https://api-luft-kma.herokuapp.com/flights/find/${from}/${to}/${date}`)
       .then(({ data }) => {
         console.log(data);
         this.setState({ flights: data, loaded: true });
@@ -69,7 +70,7 @@ class FlightPicker extends Component {
 
     // back
     if (dateBack) {
-      axios.get(`http://localhost:3000/flights/find/${to}/${from}/${dateBack}`)
+      axios.get(`https://api-luft-kma.herokuapp.com/flights/find/${to}/${from}/${dateBack}`)
         .then(({ data }) => {
           this.setState({ flightsBack: data, loaded: true });
         })
@@ -111,7 +112,7 @@ class FlightPicker extends Component {
           </React.Fragment>
         )}
         {!this.state.loaded && (
-          <div>loading...</div>
+          <div>Завантажую...</div>
         )}
       </div>
     );

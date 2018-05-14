@@ -10,7 +10,7 @@ class Basket extends Component {
 
   handleBuy() {
     Promise.all(this.props.basket.map(order => (
-      axios.post('http://localhost:3000/tickets/new', {
+      axios.post('https://api-luft-kma.herokuapp.com/tickets/new', {
         flightId: order.flight._id,
         priceId: order.price._id,
         seat: order.seat,

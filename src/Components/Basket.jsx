@@ -6,6 +6,7 @@ class Basket extends Component {
   constructor(props) {
     super(props);
     this.handleBuy = this.handleBuy.bind(this);
+    this.closeButton = React.createRef();
   }
 
   handleBuy() {
@@ -19,6 +20,7 @@ class Basket extends Component {
     )))
       .then(() => {
         this.props.onBought();
+        this.closeButton.current.click();
       })
       .catch((error) => {
         console.log(error);
@@ -33,7 +35,7 @@ class Basket extends Component {
 
             <div className="modal-header">
               <h4 className="modal-title">Кошик</h4>
-              <button type="button" className="close" data-dismiss="modal">&times;</button>
+              <button type="button" className="close" data-dismiss="modal" ref={this.closeButton}>&times;</button>
             </div>
 
             <div className="modal-body">

@@ -22,6 +22,7 @@ class App extends Component {
     this.handleOrdersAdd = this.handleOrdersAdd.bind(this);
     this.handleOrderRemove = this.handleOrderRemove.bind(this);
     this.handlePassangerChange = this.handlePassangerChange.bind(this);
+    this.handleTicketsBought = this.handleTicketsBought.bind(this);
 
     this.state = {
       route: null,
@@ -52,7 +53,7 @@ class App extends Component {
 
   fetchTickets() {
     axios.get(
-      'https://api-luft-kma.herokuapp.com/users/tickets',
+      'https://api-luft-kma.herokuapp.com/users/current/tickets',
       { withCredentials: true },
     )
       .then(({ data }) => {
@@ -66,12 +67,13 @@ class App extends Component {
 
   handleLogin(user) {
     this.setState({ user });
+    this.fetchTickets();
   }
 
   handleLogout() {
     axios.delete(
       'https://api-luft-kma.herokuapp.com/users/logout',
-      { withCredentials: true }
+      { withCredentials: true },
     )
       .then(() => {
         this.setState({ user: null });
@@ -109,6 +111,11 @@ class App extends Component {
     const { basket } = this.state;
     basket[index].passanger[prop] = val;
     this.setState({ basket });
+  }
+
+  handleTicketsBought() {
+    this.setState({ basket: [] });
+    this.fetchTickets();
   }
 
   render() {
@@ -162,7 +169,7 @@ class App extends Component {
                   onOrderRemove={this.handleOrderRemove}
                   onPassangerChange={this.handlePassangerChange}
                   user={this.state.user ? this.state.user._id : null}
-                  onBought={this.fetchTickets}
+                  onBought={this.handleTicketsBought}
                 />
                 <Tickets
                   tickets={this.state.tickets}

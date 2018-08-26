@@ -11,7 +11,7 @@ class Carousel extends Component {
         text: 'Від 200 грн',
       },
       {
-        img: 'https://preview.ibb.co/jBzOF9/Kharkiv_original_31854.jpg',
+        img: 'https://image.ibb.co/d7Zqv9/maxresdefault.jpg',
         title: 'Харків',
         text: 'Від 500 грн',
       },

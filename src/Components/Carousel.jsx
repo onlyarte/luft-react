@@ -6,12 +6,12 @@ class Carousel extends Component {
 
     this.defaultItems = [
       {
-        img: 'http://wallpapers-fenix.eu/full/151004/234116916.jpg',
+        img: 'https://lh3.googleusercontent.com/GSIB_LavGiqDmZ_4Sw_pXX1Env1fMN6TRFQg0TLxKikvhkiZeVpuvDn7tomjJxxzCs4PyoDOPp0tJmONMSoE2y9OFUpiHvwxg-Pi',
         title: 'Київ',
         text: 'Від 200 грн',
       },
       {
-        img: 'https://i.ytimg.com/vi/QYqmaFbwQc4/maxresdefault.jpg',
+        img: 'https://lh3.googleusercontent.com/Vhyd2QsbHEwxEC3s35Rqq6A2HNURacviCbH5ewdUm-twy2WnhWCfM66Km2saJWTOlnR17d9GmxYY-asZpivOo_qByhQFQBeLEHIo',
         title: 'Харків',
         text: 'Від 500 грн',
       },

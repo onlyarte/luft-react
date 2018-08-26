@@ -6,12 +6,12 @@ class Carousel extends Component {
 
     this.defaultItems = [
       {
-        img: 'https://preview.ibb.co/mMOThp/maxresdefault.jpg',
+        img: 'https://image.ibb.co/mMOThp/maxresdefault.jpg',
         title: 'Київ',
         text: 'Від 200 грн',
       },
       {
-        img: 'https://image.ibb.co/d7Zqv9/maxresdefault.jpg',
+        img: 'https://image.ibb.co/hWgs8U/Kharkiv_original_31854.jpg',
         title: 'Харків',
         text: 'Від 500 грн',
       },
